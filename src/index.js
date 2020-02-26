@@ -24,4 +24,4 @@ app.use(
 );
 app.use(require("./routes"))
 
-app.listen(3001)
+app.listen(process.env.PORT || 3001)
