@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const { promisify } = require("util");
 
-const s3 = new aws.S3();
+const s3 = new aws.S3({ accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACESS_KEY });
 
 
 const PostSchema = new mongoose.Schema({
@@ -18,13 +18,13 @@ const PostSchema = new mongoose.Schema({
   }
 });
 
-PostSchema.pre("save", function() {
+PostSchema.pre("save", function () {
   if (!this.url) {
     this.url = `${process.env.APP_URL}/files/${this.key}`;
   }
 });
 
-PostSchema.pre("remove", function() {
+PostSchema.pre("remove", function () {
   if (process.env.STORAGE_TYPE === "s3") {
     return s3
       .deleteObject({
