@@ -15,7 +15,7 @@ routes.get('/posts', async (req, res) => {
 routes.post('/posts', multer(multerConfig).single("file"), async (req, res) => {
 
     const { originalName: name, size, key, location: url = "" } = req.file
-    console.log(req.file)
+   
     const post = await Post.create({
         name,
         size,
@@ -23,16 +23,16 @@ routes.post('/posts', multer(multerConfig).single("file"), async (req, res) => {
         url
 
     })
-    
+
     return res.json(post)
 })
 
 routes.delete("/posts/:id", async (req, res) => {
     const post = await Post.findById(req.params.id);
-  
+
     await post.remove();
-  
+
     return res.send();
-  });
+});
 
 module.exports = routes;
